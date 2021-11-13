@@ -2,7 +2,8 @@
 # up-sampling to reduce checker-board effects.
 # Decoder has no BN/IN layers.
 
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 
 class Decoder(object):
@@ -27,8 +28,12 @@ class Decoder(object):
     def _create_variables(self, input_filters, output_filters, kernel_size, scope):
         with tf.variable_scope(scope):
             shape  = [kernel_size, kernel_size, input_filters, output_filters]
-            kernel = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(uniform=False), shape=shape, name='kernel')
-            bias = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(uniform=False), shape=[output_filters], name='bias')
+            # kernel = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(uniform=False), shape=shape, name='kernel')
+            # bias = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(uniform=False), shape=[output_filters], name='bias')
+            
+            kernel = tf.get_variable(initializer=tf.compat.v1.keras.initializers.glorot_normal(), shape=shape, name='kernel')
+            bias = tf.get_variable(initializer=tf.compat.v1.keras.initializers.glorot_normal(), shape=[output_filters], name='bias')
+            
             return (kernel, bias)
 
     def decode(self, image):

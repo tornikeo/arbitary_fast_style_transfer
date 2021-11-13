@@ -3,7 +3,8 @@
 from __future__ import print_function
 
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from style_transfer_net import StyleTransferNet
 from utils import get_train_images

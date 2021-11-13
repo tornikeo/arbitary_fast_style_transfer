@@ -1,6 +1,7 @@
 # Adaptive Instance Normalization
 
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 
 def AdaIN(content, style, epsilon=1e-5):

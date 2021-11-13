@@ -4,8 +4,16 @@ import numpy as np
 
 from os import listdir, mkdir, sep
 from os.path import join, exists, splitext
-from scipy.misc import imread, imsave, imresize
+from imageio import imread, imsave
+from PIL import Image
+import numpy as np
 
+import tensorflow as tf
+
+def imresize(img, shape, interp):
+    return np.array(Image.fromarray(img).resize(
+        size=shape, resample=Image.NEAREST)
+    )
 
 def list_images(directory):
     images = []
@@ -23,7 +31,11 @@ def list_images(directory):
 def get_train_images(paths, resize_len=512, crop_height=256, crop_width=256):
     images = []
     for path in paths:
-        image = imread(path, mode='RGB')
+        # image = imread(path,)# format='RGB')
+        # print(image.shape)
+
+        image = np.array(Image.open(path))
+        # print(image)
         height, width, _ = image.shape
 
         if height < width:
@@ -34,6 +46,7 @@ def get_train_images(paths, resize_len=512, crop_height=256, crop_width=256):
             new_height = int(height * new_width / width)
 
         image = imresize(image, [new_height, new_width], interp='nearest')
+        # image = image.resize([height, width], Image.NEAREST)
 
         # crop the image
         start_h = np.random.choice(new_height - crop_height + 1)
@@ -53,15 +66,19 @@ def get_images(paths, height=None, width=None):
 
     images = []
     for path in paths:
-        image = imread(path, mode='RGB')
+        # image = imread(path,)# format='RGB')
 
+        image = np.array(Image.open(path))
         if height is not None and width is not None:
+            # image = image.resize([height, width], Image.NEAREST)
             image = imresize(image, [height, width], interp='nearest')
+        # image = tf.image.decode_image(tf.io.read_file(path))
+
 
         images.append(image)
 
     images = np.stack(images, axis=0)
-
+    assert len(images.shape) == 4, f'{paths}, {images.shape}'
     return images
 
 

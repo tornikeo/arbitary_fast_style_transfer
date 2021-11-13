@@ -1,0 +1,2 @@
+model_checkpoint_path: "style_weight_2e0.ckpt"
+all_model_checkpoint_paths: "style_weight_2e0.ckpt"

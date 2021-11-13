@@ -1,7 +1,8 @@
 # Use a trained Image Transform Net to generate
 # a style transferred image with a specific style
 
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from style_transfer_net import StyleTransferNet
 from utils import get_images, save_images
@@ -39,15 +40,16 @@ def stylize(contents_path, styles_path, output_dir, encoder_path, model_path,
                 height=resize_height, width=resize_width)
 
             for style_path in styles_path:
-
+                
                 style_img   = get_images(style_path)
-
+                tf.print(style_img.shape, style_path)
                 result = sess.run(output_image, 
                     feed_dict={content: content_img, style: style_img})
 
                 outputs.append(result[0])
 
-    save_images(outputs, contents_path, styles_path, output_dir, suffix=suffix)
+    save_images(outputs, contents_path, styles_path,
+     output_dir, suffix=suffix)
 
     return outputs
 
